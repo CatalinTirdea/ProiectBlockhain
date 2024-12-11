@@ -105,9 +105,26 @@ contract Funds {
         return (total * percentage) / 100;
     }
 
-    // Get proposal details
-    function getProposal(uint256 proposalId) public view returns (string memory, uint256, uint256, uint256, bool, bool, string memory) {
-        Proposal storage proposal = proposals[proposalId];
-        return (proposal.description, proposal.amountRequested, proposal.votesFor, proposal.votesAgainst, proposal.open, proposal.executed, proposal.ipfsHash);
+    function getProposal(uint256 proposalId) public view returns (string memory description, uint256 amountRequested, uint256 votesFor, uint256 votesAgainst, bool open, bool executed, string memory ipfsHash) {
+        require(proposalId < proposalCount, "Invalid proposal ID");
+        Proposal storage p = proposals[proposalId];
+        return (p.description, p.amountRequested, p.votesFor, p.votesAgainst, p.open, p.executed, p.ipfsHash);
+    }
+
+    // Function to get all proposals by calling getProposal(id) for each
+    function getAllProposals() public view returns (string[] memory descriptions, uint256[] memory amountsRequested, uint256[] memory votesFor, uint256[] memory votesAgainst, bool[] memory opens, bool[] memory executeds, string[] memory ipfsHashes) {
+        descriptions = new string[](proposalCount);
+        amountsRequested = new uint256[](proposalCount);
+        votesFor = new uint256[](proposalCount);
+        votesAgainst = new uint256[](proposalCount);
+        opens = new bool[](proposalCount);
+        executeds = new bool[](proposalCount);
+        ipfsHashes = new string[](proposalCount);
+
+        for (uint256 i = 0; i < proposalCount; i++) {
+            (descriptions[i], amountsRequested[i], votesFor[i], votesAgainst[i], opens[i], executeds[i], ipfsHashes[i]) = getProposal(i);
+        }
+
+        return (descriptions, amountsRequested, votesFor, votesAgainst, opens, executeds, ipfsHashes);
     }
 }

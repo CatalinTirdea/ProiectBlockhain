@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/home/flawreen/RiderProjects/ProiectBlockhain/app/hardhat/contracts/fonduri.sol": {
-      "lastModificationDate": 1733916428400,
-      "contentHash": "342efd356ba378bb86605572d35e12b1",
+      "lastModificationDate": 1733932217041,
+      "contentHash": "cdaa3c07043e5adbbeb9cf48c4871c91",
       "sourceName": "contracts/fonduri.sol",
       "solcConfig": {
         "version": "0.8.28",

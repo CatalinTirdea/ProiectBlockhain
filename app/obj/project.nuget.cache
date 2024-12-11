@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "lL77/yDl1fo=",
+  "dgSpecHash": "vY4zpy3zw0U=",
   "success": true,
   "projectFilePath": "/home/flawreen/RiderProjects/ProiectBlockhain/app/app.csproj",
   "expectedPackageFiles": [
@@ -27,7 +27,7 @@
     "/home/flawreen/.nuget/packages/nethereum.util/4.26.0/nethereum.util.4.26.0.nupkg.sha512",
     "/home/flawreen/.nuget/packages/nethereum.util.rest/4.26.0/nethereum.util.rest.4.26.0.nupkg.sha512",
     "/home/flawreen/.nuget/packages/nethereum.web3/4.26.0/nethereum.web3.4.26.0.nupkg.sha512",
-    "/home/flawreen/.nuget/packages/newtonsoft.json/11.0.2/newtonsoft.json.11.0.2.nupkg.sha512",
+    "/home/flawreen/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/home/flawreen/.nuget/packages/portable.bouncycastle/1.8.2/portable.bouncycastle.1.8.2.nupkg.sha512",
     "/home/flawreen/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "/home/flawreen/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
