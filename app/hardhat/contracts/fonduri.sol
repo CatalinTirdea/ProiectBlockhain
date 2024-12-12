@@ -9,15 +9,16 @@ contract Funds {
         uint256 votesAgainst;
         bool open;
         bool executed;
-        mapping(address => bool) voters;
         string ipfsHash; // For storing IPFS hash of the proposal description
     }
 
     address public owner;
     uint256 public totalFunds;
-    mapping(uint256 => Proposal) public proposals;
+    Proposal[] public proposals;
     uint256 public proposalCount;
     address public charityContractAddress;  // Charity contract address for external interaction
+    // Mapping to track who voted for each proposal
+    mapping(uint256 => mapping(address => bool)) public voters;
 
     event DonationReceived(address indexed donor, uint256 amount);
     event ProposalCreated(uint256 indexed proposalId, string description, uint256 amountRequested, string ipfsHash);
@@ -42,28 +43,33 @@ contract Funds {
     }
 
     // Create proposal with IPFS hash
-    function createProposal(string memory description, uint256 amountRequested, string memory ipfsHash) public onlyOwner {
+    function createProposal(string memory description, uint256 amountRequested, string memory ipfsHash) public {
         require(amountRequested <= totalFunds, "Not enough funds");
-        Proposal storage newProposal = proposals[proposalCount++];
+        Proposal storage newProposal = proposals.push();
         newProposal.description = description;
         newProposal.amountRequested = amountRequested;
         newProposal.open = true;
         newProposal.ipfsHash = ipfsHash;
-        emit ProposalCreated(proposalCount - 1, description, amountRequested, ipfsHash);
+
+        emit ProposalCreated(proposals.length - 1, description, amountRequested, ipfsHash);
     }
 
     // Vote for a proposal
     function vote(uint256 proposalId, bool support) public {
         Proposal storage proposal = proposals[proposalId];
         require(proposal.open, "Voting closed");
-        require(!proposal.voters[msg.sender], "Already voted");
+        require(!voters[proposalId][msg.sender], "Already voted");
 
-        proposal.voters[msg.sender] = true;
+        // Track the voter
+        voters[proposalId][msg.sender] = true;
+
+        // Update votes based on support
         if (support) {
             proposal.votesFor++;
         } else {
             proposal.votesAgainst++;
         }
+
         emit Voted(proposalId, msg.sender, support);
     }
 
@@ -105,26 +111,51 @@ contract Funds {
         return (total * percentage) / 100;
     }
 
-    function getProposal(uint256 proposalId) public view returns (string memory description, uint256 amountRequested, uint256 votesFor, uint256 votesAgainst, bool open, bool executed, string memory ipfsHash) {
-        require(proposalId < proposalCount, "Invalid proposal ID");
+    function getProposal(uint256 proposalId) public view returns (
+        string memory description,
+        uint256 amountRequested,
+        uint256 votesFor,
+        uint256 votesAgainst,
+        bool open,
+        bool executed,
+        string memory ipfsHash)
+    {
+        require(proposalId < proposals.length, "Invalid proposal ID");
         Proposal storage p = proposals[proposalId];
-        return (p.description, p.amountRequested, p.votesFor, p.votesAgainst, p.open, p.executed, p.ipfsHash);
+        return (
+            p.description,
+            p.amountRequested,
+            p.votesFor,
+            p.votesAgainst,
+            p.open,
+            p.executed,
+            p.ipfsHash
+        );
     }
 
     // Function to get all proposals by calling getProposal(id) for each
-    function getAllProposals() public view returns (string[] memory descriptions, uint256[] memory amountsRequested, uint256[] memory votesFor, uint256[] memory votesAgainst, bool[] memory opens, bool[] memory executeds, string[] memory ipfsHashes) {
-        descriptions = new string[](proposalCount);
-        amountsRequested = new uint256[](proposalCount);
-        votesFor = new uint256[](proposalCount);
-        votesAgainst = new uint256[](proposalCount);
-        opens = new bool[](proposalCount);
-        executeds = new bool[](proposalCount);
-        ipfsHashes = new string[](proposalCount);
+    function getAllProposals() public view returns (
+        string[] memory descriptions,
+        uint256[] memory amountsRequested,
+        uint256[] memory votesFor,
+        uint256[] memory votesAgainst,
+        bool[] memory opens,
+        bool[] memory executeds,
+        string[] memory ipfsHashes)
+    {
+        descriptions = new string[](proposals.length);
+        amountsRequested = new uint256[](proposals.length);
+        votesFor = new uint256[](proposals.length);
+        votesAgainst = new uint256[](proposals.length);
+        opens = new bool[](proposals.length);
+        executeds = new bool[](proposals.length);
+        ipfsHashes = new string[](proposals.length);
 
-        for (uint256 i = 0; i < proposalCount; i++) {
+        for (uint256 i = 0; i < proposals.length; i++) {
             (descriptions[i], amountsRequested[i], votesFor[i], votesAgainst[i], opens[i], executeds[i], ipfsHashes[i]) = getProposal(i);
         }
 
         return (descriptions, amountsRequested, votesFor, votesAgainst, opens, executeds, ipfsHashes);
     }
+
 }

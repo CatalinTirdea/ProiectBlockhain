@@ -1,9 +1,8 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import { TextField, Button, Typography, Box, CircularProgress } from "@mui/material";
 import crypto from "crypto-js";
-import {Context} from "../App.tsx";
+import { Context } from "../App.tsx";
 
-// TODO imi trebuie adresa curenta de la wallet
 function CreateProposal() {
     const [description, setDescription] = useState("");
     const [amountRequested, setAmountRequested] = useState("");
@@ -17,6 +16,9 @@ function CreateProposal() {
             return;
         }
 
+        // Prevent multiple submissions
+        if (loading) return;
+
         setLoading(true);
         setMessage("");
 
@@ -26,10 +28,10 @@ function CreateProposal() {
 
             // Create payload for backend
             const proposalData = {
-                description,
-                amountRequested,
-                ipfsHash: hash, 
-                address: address
+                Description: description,
+                AmountRequested: amountRequested,
+                IpfsHash: hash,
+                address: address,
             };
 
             // Send data to backend
@@ -62,8 +64,6 @@ function CreateProposal() {
                 maxWidth: "400px",
                 margin: "auto",
                 padding: "20px",
-                backgroundColor: "#1e1e1e", // Dark background
-                color: "#ffffff", // White text for contrast
                 borderRadius: "8px",
                 boxShadow: 3,
             }}

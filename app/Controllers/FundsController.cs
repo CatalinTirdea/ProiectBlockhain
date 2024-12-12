@@ -32,44 +32,45 @@ public class FundsController : ControllerBase
     public async Task<IActionResult> GetAllProposalsAsync()
     {
         var contract = _web3.Eth.GetContract(_abi, _contractAddress);
-        var function = contract.GetFunction("getAllProposals");
-        var result = await function.CallAsync<List<string>>(); // Assuming you get a flat list of values from the contract
+        var getProposalFunction = contract.GetFunction("getProposal");
 
-        // Ensure the result is valid
-        if (result == null || result.Count == 0)
-        {
-            return NotFound(new { Message = "No proposals found." });
-        }
-
-        // Number of proposals should be the size of the arrays divided by 7
-        int totalProposals = result.Count / 7;
-
-        // Split the result into separate lists based on the proposal attributes
-        var descriptions = result.Take(totalProposals).ToList();
-        var amountsRequested = result.Skip(totalProposals).Take(totalProposals).ToList();
-        var votesFor = result.Skip(2 * totalProposals).Take(totalProposals).ToList();
-        var votesAgainst = result.Skip(3 * totalProposals).Take(totalProposals).ToList();
-        var opens = result.Skip(4 * totalProposals).Take(totalProposals).ToList();
-        var executeds = result.Skip(5 * totalProposals).Take(totalProposals).ToList();
-        var ipfsHashes = result.Skip(6 * totalProposals).Take(totalProposals).ToList();
-
-        // Create a list to hold the Proposal objects
         var proposals = new List<Proposal>();
+        int id = 0;
 
-        // Populate the Proposal objects
-        for (int i = 0; i < totalProposals; i++)
+        while (true)
         {
-            proposals.Add(new Proposal
+            try
             {
-                Description = descriptions[i],
-                AmountRequested = BigInteger.Parse(amountsRequested[i]),
-                VotesFor = BigInteger.Parse(votesFor[i]),
-                VotesAgainst = BigInteger.Parse(votesAgainst[i]),
-                Open = bool.Parse(opens[i]),
-                Executed = bool.Parse(executeds[i]),
-                IpfsHash = ipfsHashes[i]
-            });
+                // Call the getProposal function
+                var result = await getProposalFunction.CallAsync<string>(id); // Call the function to get raw string data.
+
+
+                // If the result is null or the essential fields are missing, stop the loop
+                if (string.IsNullOrEmpty(result))
+                {
+                    break;
+                }
+
+                // Add the proposal to the list
+                proposals.Add(new Proposal
+                {
+                    Id = id,
+                    Description = result,
+                    AmountRequested = 0,
+                    VotesFor = 0,
+                    VotesAgainst = 0,
+                    Open = true,
+                    Executed = false
+                });
+
+                id++; // Increment ID for the next proposal
+            }
+            catch
+            {
+                break; // Stop if an exception occurs
+            }
         }
+
 
         // Return the list of proposals as the response
         return Ok(proposals);
@@ -87,7 +88,7 @@ public class FundsController : ControllerBase
             var receipt = await createProposalFunction.SendTransactionAndWaitForReceiptAsync(
                 from: proposal.Address,
                 gas: new HexBigInteger(29999999),
-                value: new HexBigInteger(1),
+                value: new HexBigInteger(0),
                 functionInput: new object[] { proposal.Description, proposal.AmountRequested, proposal.IpfsHash }
             );
 
@@ -110,7 +111,7 @@ public class FundsController : ControllerBase
             var receipt = await distributeFundsFunction.SendTransactionAndWaitForReceiptAsync(
                 from: distributeFunds.Address,
                 gas: new HexBigInteger(29999999),
-                value: new HexBigInteger(1),
+                value: new HexBigInteger(0),
                 functionInput: new object[] { distributeFunds.ProposalId }
             );
 

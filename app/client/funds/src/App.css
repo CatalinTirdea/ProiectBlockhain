@@ -40,3 +40,23 @@
 .read-the-docs {
   color: #888;
 }
+/* Add styles for the container and layout */
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 6px;
+}
+
+.left-side {
+    flex: 1;
+    margin-right: 20px; /* Space between left and right sections */
+}
+
+.right-side {
+    flex: 2; /* Makes the right section take up more space */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Adds space between CreateProposal and Wallet */
+}
+

@@ -23,9 +23,15 @@ function App() {
     return (
         <>
             <ContextProvider>
-                <ProposalList/>
-                <CreateProposal/>
-                <Wallet/>
+                <div className="container">
+                    <div className="left-side">
+                        <ProposalList />
+                    </div>
+                    <div className="right-side">
+                        <CreateProposal />
+                        <Wallet />
+                    </div>
+                </div>
             </ContextProvider>
         </>
     )

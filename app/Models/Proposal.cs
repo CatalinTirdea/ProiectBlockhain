@@ -6,11 +6,12 @@ namespace app.Models;
 
 public class Proposal
 {
+    public int? Id { get; set; }
     public string Description { get; set; }
-    public BigInteger AmountRequested { get; set; }
-    public BigInteger VotesFor { get; set; }
-    public BigInteger VotesAgainst { get; set; }
+    public int? AmountRequested { get; set; }
+    public int? VotesFor { get; set; }
+    public int? VotesAgainst { get; set; }
     public bool Open { get; set; }
     public bool Executed { get; set; }
-    public string IpfsHash { get; set; }
+    public string? IpfsHash { get; set; }
 }
