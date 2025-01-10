@@ -35,7 +35,7 @@ function CreateProposal() {
             };
 
             // Send data to backend
-            const response = await fetch("https://localhost:7070/api/createProposal", {
+            const response = await fetch("http://localhost:5181/api/createProposal", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

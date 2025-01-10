@@ -3,6 +3,7 @@ import { Grid, Card, CardContent, Typography, CircularProgress, Alert, IconButto
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
+
 const AllProposals = () => {
     const [proposals, setProposals] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -12,7 +13,7 @@ const AllProposals = () => {
     useEffect(() => {
         const fetchProposals = async () => {
             try {
-                const response = await fetch('https://localhost:7070/api/getAllProposals');
+                const response = await fetch('http://localhost:5181/api/getAllProposals');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -35,6 +36,37 @@ const AllProposals = () => {
     if (error) {
         return <Alert severity="error">{error}</Alert>;
     }
+
+
+    const vote = async (proposalId: number, support: boolean) => {
+        setError('Submitting vote...');
+
+        try {
+            const response = await fetch('http://localhost:5181/api/vote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    Address: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC', // Înlocuiește cu adresa ta Ethereum
+                    ProposalId: proposalId,
+                    Support: support,
+                }),
+            });
+
+            if (response.ok) {
+                setError('Vote submitted successfully!');
+            } else {
+                const error = await response.json();
+                setError(`Error: ${error.Error || 'Something went wrong'}`);
+            }
+        } catch (error) {
+            setError(`Error: ${(error as Error).message}`);
+        }
+    };
+
+
+
 
     return (
         <Grid container spacing={2} justifyContent="center">
@@ -73,7 +105,7 @@ const AllProposals = () => {
                             )}
                             <Grid container spacing={1} alignItems="center" sx={{ marginTop: 2 }}>
                                 <Grid item>
-                                    <IconButton disabled>
+                                    <IconButton onClick={() => vote(proposal.id, true)}>
                                         <ThumbUpIcon sx={{ color: '#4caf50' }} />
                                     </IconButton>
                                     <Typography variant="body2" sx={{ color: '#4caf50' }}>
@@ -81,7 +113,7 @@ const AllProposals = () => {
                                     </Typography>
                                 </Grid>
                                 <Grid item>
-                                    <IconButton disabled>
+                                    <IconButton onClick={() => vote(proposal.id, false)}>
                                         <ThumbDownIcon sx={{ color: '#f44336' }} />
                                     </IconButton>
                                     <Typography variant="body2" sx={{ color: '#f44336' }}>

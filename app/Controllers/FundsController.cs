@@ -27,6 +27,30 @@ public class FundsController : ControllerBase
         _web3 = new Web3(hardhatUrl);
     }
 
+    [HttpPost("vote")]
+    public async Task<IActionResult> Vote([FromBody] VoteDto voteDto)
+    {
+        try
+        {
+            var contract = _web3.Eth.GetContract(_abi, _contractAddress);
+            var voteFunction = contract.GetFunction("vote");
+
+            var receipt = await voteFunction.SendTransactionAndWaitForReceiptAsync(
+                from: voteDto.Address,
+                gas: new HexBigInteger(3000000),
+                value: new HexBigInteger(0),
+                functionInput: new object[] { voteDto.ProposalId, voteDto.Support }
+            );
+
+            return Ok(new { Message = "Vote submitted successfully!", TransactionHash = receipt.TransactionHash });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { Error = ex.Message });
+        }
+    }
+
+
     // TODO inca nu am testat cum afiseaza ca nu am adaugat niciun proposal
     [HttpGet("getAllProposals")]
     public async Task<IActionResult> GetAllProposalsAsync()

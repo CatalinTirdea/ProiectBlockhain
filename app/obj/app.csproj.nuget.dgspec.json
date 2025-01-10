@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/flawreen/RiderProjects/ProiectBlockhain/app/app.csproj": {}
+    "/home/catalintirdea/Facultate/ProiectBlockhain/app/app.csproj": {}
   },
   "projects": {
-    "/home/flawreen/RiderProjects/ProiectBlockhain/app/app.csproj": {
+    "/home/catalintirdea/Facultate/ProiectBlockhain/app/app.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/flawreen/RiderProjects/ProiectBlockhain/app/app.csproj",
+        "projectUniqueName": "/home/catalintirdea/Facultate/ProiectBlockhain/app/app.csproj",
         "projectName": "app",
-        "projectPath": "/home/flawreen/RiderProjects/ProiectBlockhain/app/app.csproj",
-        "packagesPath": "/home/flawreen/.nuget/packages/",
-        "outputPath": "/home/flawreen/RiderProjects/ProiectBlockhain/app/obj/",
+        "projectPath": "/home/catalintirdea/Facultate/ProiectBlockhain/app/app.csproj",
+        "packagesPath": "/home/catalintirdea/.nuget/packages/",
+        "outputPath": "/home/catalintirdea/Facultate/ProiectBlockhain/app/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/flawreen/.nuget/NuGet/NuGet.Config"
+          "/home/catalintirdea/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -32,12 +32,21 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Cors": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.8, )"
@@ -74,7 +83,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
