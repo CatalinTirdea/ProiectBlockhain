@@ -100,7 +100,7 @@ public class FundsController : ControllerBase
         return Ok(proposals);
     }
 
-    [HttpPost("createProposal")]
+ [HttpPost("createProposal")]
     public async Task<IActionResult> CreateProposal([FromBody] CreateProposalDto proposal)
     {
         try

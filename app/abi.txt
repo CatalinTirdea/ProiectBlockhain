@@ -79,6 +79,12 @@
         {
           "indexed": false,
           "internalType": "string",
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
           "name": "description",
           "type": "string"
         },
@@ -124,30 +130,6 @@
       "type": "event"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "total",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "percentage",
-          "type": "uint256"
-        }
-      ],
-      "name": "calculatePercentage",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "charityContractAddress",
       "outputs": [
@@ -162,6 +144,11 @@
     },
     {
       "inputs": [
+        {
+          "internalType": "string",
+          "name": "title",
+          "type": "string"
+        },
         {
           "internalType": "string",
           "name": "description",
@@ -204,22 +191,14 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "donateToCharity",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "getAllProposals",
       "outputs": [
+        {
+          "internalType": "string[]",
+          "name": "titles",
+          "type": "string[]"
+        },
         {
           "internalType": "string[]",
           "name": "descriptions",
@@ -269,6 +248,11 @@
       ],
       "name": "getProposal",
       "outputs": [
+        {
+          "internalType": "string",
+          "name": "title",
+          "type": "string"
+        },
         {
           "internalType": "string",
           "name": "description",
@@ -322,19 +306,6 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "proposalCount",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -344,6 +315,11 @@
       ],
       "name": "proposals",
       "outputs": [
+        {
+          "internalType": "string",
+          "name": "title",
+          "type": "string"
+        },
         {
           "internalType": "string",
           "name": "description",
@@ -381,19 +357,6 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_charityContract",
-          "type": "address"
-        }
-      ],
-      "name": "setCharityContract",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -449,19 +412,6 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "withdraw",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     }
   ]
