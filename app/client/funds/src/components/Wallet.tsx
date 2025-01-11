@@ -1,6 +1,7 @@
 import React, {useContext, useState} from "react";
 import { Button, Typography, Box, CircularProgress } from "@mui/material";
 import { ethers } from "ethers";
+import { getProvider, getSigner } from "../web3Provider";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import {Context} from "../App.tsx";
 declare global {
@@ -19,37 +20,45 @@ function Wallet() {
 
     const connectWallet = async () => {
         try {
-            if (!window.ethereum) {
+            const provider = getProvider();
+            if (!provider) {
                 setErrorMessage("MetaMask is not installed. Please install it to continue.");
                 return;
             }
-
+    
             setLoading(true);
-
-            // Request wallet connection
-            const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-            const waddress = accounts[0];
-            setWalletAddress(waddress);
-            setAddress(waddress);
-
-            // Fetch balance
-            const provider = new ethers.BrowserProvider(window.ethereum);
-            const balanceInWei = await provider.getBalance(waddress);
-            const balanceInEth = ethers.formatEther(balanceInWei);
-            setBalance(balanceInEth);
-
-            // Check network
-            const networkDetails = await provider.getNetwork();
-            setNetwork(networkDetails.name);
-
-            setErrorMessage("");
+    
+            // Request wallet connection using `send` method
+            await provider.send("eth_requestAccounts", []);
+            console.log("Wallet connected!");
+    
+            const signer = await getSigner();
+            if (signer) {
+                const waddress = await signer.getAddress();
+                console.log("Wallet address:", waddress);
+                setWalletAddress(waddress);
+                setAddress(waddress);
+    
+                // Fetch balance
+                const balanceInWei = await provider.getBalance(waddress);
+                const balanceInEth = ethers.formatEther(balanceInWei);
+                console.log("Balance in ETH:", balanceInEth);
+                setBalance(balanceInEth);
+    
+                // Check network
+                const networkDetails = await provider.getNetwork();
+                console.log("Network details:", networkDetails);
+                setNetwork(networkDetails.name);
+    
+                setErrorMessage("");
+            }
         } catch (error) {
-            setErrorMessage(`Error connecting wallet: ${error.message}`);
+            setErrorMessage(`Error connecting wallet: ${(error as Error).message}`);
         } finally {
             setLoading(false);
         }
     };
-
+    
     return (
         <Box
             sx={{
