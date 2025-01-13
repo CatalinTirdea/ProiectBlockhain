@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Grid, Card, CardContent, Typography, CircularProgress, Alert, Button, TextField, MenuItem } from '@mui/material';
+import AllProposals from './AllProposals';
 
 const Donate = () => {
     const [proposals, setProposals] = useState([]);
@@ -69,7 +70,7 @@ const Donate = () => {
     }
 
     return (
-        <Grid container spacing={2} justifyContent="center">
+        <Grid container spacing={2} justifyContent="center" style={{ display: 'flex', gap: '20px' }}>
             <Grid item xs={12} sm={6} md={6}>
                 <Card sx={{ backgroundColor: '#333', minWidth: 196, marginX: 3 }}>
                     <CardContent>
@@ -106,6 +107,9 @@ const Donate = () => {
                         </Button>
                     </CardContent>
                 </Card>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6}>
+                <AllProposals />
             </Grid>
         </Grid>
     );
