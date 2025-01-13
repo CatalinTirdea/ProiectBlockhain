@@ -86,6 +86,17 @@ const AllProposals = () => {
                                     whiteSpace: 'normal', // Allow normal wrapping and line breaks
                                 }}
                             >
+                                {proposal.title}
+                            </Typography>
+                            <Typography
+                                variant="body1"
+                                gutterBottom
+                                sx={{
+                                    wordWrap: 'break-word', // Ensure long words break
+                                    overflowWrap: 'break-word', // Ensure text breaks when it overflows
+                                    whiteSpace: 'normal', // Allow normal wrapping and line breaks
+                                }}
+                            >
                                 {proposal.description}
                             </Typography>
 

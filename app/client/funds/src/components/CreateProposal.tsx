@@ -4,6 +4,7 @@ import crypto from "crypto-js";
 import { Context } from "../App.tsx";
 
 function CreateProposal() {
+    const [title, setTitle] = useState(""); // Added title state
     const [description, setDescription] = useState("");
     const [amountRequested, setAmountRequested] = useState("");
     const [loading, setLoading] = useState(false);
@@ -11,7 +12,7 @@ function CreateProposal() {
     const { address } = useContext(Context);
 
     const handleSubmit = async () => {
-        if (!description || !amountRequested) {
+        if (!title || !description || !amountRequested) { // Added title validation
             setMessage("Please fill in all fields.");
             return;
         }
@@ -28,8 +29,9 @@ function CreateProposal() {
 
             // Create payload for backend
             const proposalData = {
+                Title: title, // Added title to payload
                 Description: description,
-                AmountRequested: amountRequested,
+                AmountRequested: parseFloat(amountRequested), // Convert to number
                 IpfsHash: hash,
                 address: address,
             };
@@ -45,6 +47,7 @@ function CreateProposal() {
 
             if (response.ok) {
                 setMessage("Proposal created successfully!");
+                setTitle(""); // Clear title field
                 setDescription("");
                 setAmountRequested("");
             } else {
@@ -71,6 +74,19 @@ function CreateProposal() {
             <Typography variant="h5" align="center" gutterBottom>
                 Create Proposal
             </Typography>
+            <TextField
+                label="Title" // Added title field
+                variant="outlined"
+                fullWidth
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                sx={{
+                    marginBottom: "16px",
+                    "& .MuiInputBase-root": { color: "#ffffff" },
+                    "& .MuiInputLabel-root": { color: "#aaaaaa" },
+                    "& .MuiOutlinedInput-notchedOutline": { borderColor: "#444444" },
+                }}
+            />
             <TextField
                 label="Description"
                 variant="outlined"

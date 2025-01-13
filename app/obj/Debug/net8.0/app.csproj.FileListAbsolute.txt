@@ -65,4 +65,4 @@
 /home/catalintirdea/Facultate/ProiectBlockhain/app/obj/Debug/net8.0/app.pdb
 /home/catalintirdea/Facultate/ProiectBlockhain/app/obj/Debug/net8.0/app.genruntimeconfig.cache
 /home/catalintirdea/Facultate/ProiectBlockhain/app/obj/Debug/net8.0/ref/app.dll
-/home/catalintirdea/Facultate/ProiectBlockhain/app/bin/Debug/net8.0/hardhat/artifacts/build-info/5f1789fae729c7ca21d2b8eff38fa41b.json
+/home/catalintirdea/Facultate/ProiectBlockhain/app/bin/Debug/net8.0/hardhat/artifacts/build-info/8212a9037af39ced51e4be0c3eefdd7a.json

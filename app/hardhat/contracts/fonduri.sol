@@ -43,6 +43,7 @@ contract Funds {
     function createProposal(string memory title, string memory description, uint256 amountRequested, string memory ipfsHash) public {
         require(amountRequested <= totalFunds, "Not enough funds");
         Proposal storage newProposal = proposals.push();
+        newProposal.title = title; // Added title assignment
         newProposal.description = description;
         newProposal.amountRequested = amountRequested;
         newProposal.open = true;

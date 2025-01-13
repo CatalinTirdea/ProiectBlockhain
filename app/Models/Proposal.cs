@@ -5,6 +5,7 @@ namespace app.Models;
 public class Proposal
 {
     public int? Id { get; set; }
+    public string Title { get; set; } // Add title field
     public string Description { get; set; }
     public int? AmountRequested { get; set; }
     public int? VotesFor { get; set; }
