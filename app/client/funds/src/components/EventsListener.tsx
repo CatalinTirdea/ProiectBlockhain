@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Grid, Card, CardContent, Typography, CircularProgress, Alert } from '@mui/material';
-import { ethers } from 'ethers';
-import { getProvider } from '../web3Provider';
 
 const EventsListener = () => {
     const [events, setEvents] = useState([]);
@@ -9,48 +7,22 @@ const EventsListener = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const listenToEvents = async () => {
+        const fetchEvents = async () => {
             try {
-                const provider = getProvider();
-                if (!provider) {
-                    throw new Error('MetaMask is not installed. Please install it to continue.');
+                const response = await fetch('http://localhost:5181/api/listenEvents');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch events');
                 }
-
-                const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'; // Replace with your contract address
-                const abi = [
-                    // Add the ABI of the events you want to listen to
-                    "event DonationReceived(address indexed donor, uint256 amount)",
-                    "event ProposalCreated(uint256 indexed proposalId, string title, string description, uint256 amountRequested, string ipfsHash)",
-                    "event Voted(uint256 indexed proposalId, address voter, bool support)",
-                    "event FundsDistributed(uint256 indexed proposalId, address recipient, uint256 amount)"
-                ];
-
-                const contract = new ethers.Contract(contractAddress, abi, provider);
-
-                contract.on('DonationReceived', (donor, amount) => {
-                    setEvents((prevEvents) => [...prevEvents, `DonationReceived: Donor=${donor}, Amount=${ethers.utils.formatEther(amount)} ETH`]);
-                });
-
-                contract.on('ProposalCreated', (proposalId, title, description, amountRequested, ipfsHash) => {
-                    setEvents((prevEvents) => [...prevEvents, `ProposalCreated: ProposalId=${proposalId}, Title=${title}, Description=${description}, AmountRequested=${ethers.utils.formatEther(amountRequested)} ETH, IpfsHash=${ipfsHash}`]);
-                });
-
-                contract.on('Voted', (proposalId, voter, support) => {
-                    setEvents((prevEvents) => [...prevEvents, `Voted: ProposalId=${proposalId}, Voter=${voter}, Support=${support}`]);
-                });
-
-                contract.on('FundsDistributed', (proposalId, recipient, amount) => {
-                    setEvents((prevEvents) => [...prevEvents, `FundsDistributed: ProposalId=${proposalId}, Recipient=${recipient}, Amount=${ethers.utils.formatEther(amount)} ETH`]);
-                });
-
+                const data = await response.json();
+                setEvents(data);
                 setLoading(false);
             } catch (err) {
-                setError('Failed to listen to events');
+                setError('Failed to fetch events');
                 setLoading(false);
             }
         };
 
-        listenToEvents();
+        fetchEvents();
     }, []);
 
     if (loading) {

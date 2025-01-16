@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Grid, Card, CardContent, Typography, CircularProgress, Alert, Button, TextField, MenuItem } from '@mui/material';
 import AllProposals from './AllProposals';
-
+import Wallet from './Wallet';   
 const Donate = () => {
     const [proposals, setProposals] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -40,7 +40,7 @@ const Donate = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    Address: '0x5FbDB2315678afecb367f032d93F642f64180aa3', // Replace with your Ethereum address
+                    Address: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
                     ProposalId: selectedProposal,
                     Amount: amount,
                 }),
@@ -89,7 +89,7 @@ const Donate = () => {
                         >
                             {proposals.map((proposal) => (
                                 <MenuItem key={proposal.id} value={proposal.id}>
-                                    {proposal.title}
+                                    {proposal.id}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -109,6 +109,10 @@ const Donate = () => {
                 </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={6}>
+            <Typography variant="h6" gutterBottom>
+                            Connect to wallet;
+                        </Typography>
+                        <Wallet />
                 <AllProposals />
             </Grid>
         </Grid>

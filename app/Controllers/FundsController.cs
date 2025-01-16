@@ -159,10 +159,10 @@ public class FundsController : ControllerBase
 
             // Ensure the address is unlocked and available
             var accounts = await _web3.Eth.Accounts.SendRequestAsync();
-            if (!accounts.Contains(donateDto.Address))
-            {
-                return BadRequest(new { Error = "Unknown account: " + donateDto.Address });
-            }
+            // if (!accounts.Contains(donateDto.Address))
+            // {
+            //     return BadRequest(new { Error = "Unknown account: " + donateDto.Address });
+            // }
 
             var receipt = await donateFunction.SendTransactionAndWaitForReceiptAsync(
                 from: donateDto.Address,
