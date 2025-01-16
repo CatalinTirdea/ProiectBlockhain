@@ -67,7 +67,8 @@ contract Funds {
 
         emit Voted(proposalId, msg.sender, support);
     }
-
+    
+    // withdrawal pattern
     function distributeFunds(uint256 proposalId) public onlyOwner {
         Proposal storage proposal = proposals[proposalId];
         require(proposal.open, "Proposal closed");
